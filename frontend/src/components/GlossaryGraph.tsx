@@ -11,23 +11,22 @@ export const GlossaryGraph: React.FC<GraphProps> = ({ data, onTermSelected }) =>
   const graphRef = useRef<ForceGraphMethods | undefined>(undefined);
   const [hoverNode, setHoverNode] = useState<GraphNode | null>(null);
 
-  // --- НАСТРОЙКА ФИЗИКИ (ЧТОБЫ НЕ БЫЛО КАШИ) ---
+  // --- НАСТРОЙКА ФИЗИКИ  ---
   useEffect(() => {
     if (graphRef.current) {
       // d3Force позволяет управлять физическими силами
       
-      // 1. Сила отталкивания (Charge). Делаем отрицательной и большой, чтобы узлы разлетались
+      // 1. Сила отталкивания (Charge)
       graphRef.current.d3Force('charge')?.strength(-400); 
       
-      // 2. Длина связей (Link). Делаем длиннее, чтобы вмещался текст
+      // 2. Длина связей (Link)
       graphRef.current.d3Force('link')?.distance(150);
       
       // 3. Перезапуск симуляции с новыми параметрами
       graphRef.current.d3ReheatSimulation();
     }
-  }, [data]); // Пересчитываем при загрузке данных
+  }, [data]); 
 
-  // --- КОНСТАНТЫ ЦВЕТОВ ---
   const COLOR_MAIN = '#2563EB'; 
   const COLOR_DEFAULT = '#4B5563'; 
   const COLOR_TEXT = '#ffffff';
@@ -57,8 +56,6 @@ export const GlossaryGraph: React.FC<GraphProps> = ({ data, onTermSelected }) =>
     ctx.fillStyle = COLOR_TEXT;
     ctx.fillText(label, node.x, node.y);
     
-    // Сохраняем размеры узла в объект node, чтобы движок мог (потенциально) использовать это для коллизий,
-    // но главное - мы разнесли их физикой выше.
     node.__bckgDimensions = bckgDimensions; 
   }, [hoverNode]);
 
@@ -102,8 +99,6 @@ export const GlossaryGraph: React.FC<GraphProps> = ({ data, onTermSelected }) =>
   }, [hoverNode]);
 
   // --- ОБЛАСТЬ КЛИКА (HITBOX) ---
-  // Мы рисуем точно такой же прямоугольник, но заливаем его специальным цветом,
-  // который библиотека использует для обнаружения мыши.
   const nodePointerAreaPaint = useCallback((node: any, color: string, ctx: CanvasRenderingContext2D) => {
     const label = node.name;
     const fontSize = 12;
@@ -113,10 +108,9 @@ export const GlossaryGraph: React.FC<GraphProps> = ({ data, onTermSelected }) =>
     const textWidth = ctx.measureText(label).width;
     const bckgDimensions = [textWidth + 12, fontSize + 8]; 
 
-    ctx.fillStyle = color; // ВАЖНО: используем цвет, который передала библиотека
+    ctx.fillStyle = color; 
     
     ctx.beginPath();
-    // Рисуем ту же форму, что и в paintNode
     if (ctx.roundRect) {
         ctx.roundRect(
             node.x - bckgDimensions[0] / 2, 
