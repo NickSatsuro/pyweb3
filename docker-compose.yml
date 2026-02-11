@@ -11,7 +11,7 @@ services:
     restart: always
 
   web:
-    image: satsuro/glossary_frontend:latest
+    image: satsuro/glossary-frontend:latest
     container_name: glossary_frontend
     ports:
       - "3000:80"
