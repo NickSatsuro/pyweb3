@@ -272,6 +272,9 @@ docker compose up -d
 
 ## API Эндпоинты
 
+API находится по адресу http://localhost:8000/api/
+Документация API находится по адресу http://localhost:8000/api/docs
+
 ### Получение списка терминов
 
 ```text
