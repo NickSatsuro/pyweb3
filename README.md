@@ -270,4 +270,65 @@ services:
 docker compose up -d
 ```
 
-## Инструкция по запуску
+## API Эндпоинты
+
+### Получение списка терминов
+
+```text
+GET /api/terms
+```
+
+### Получение конкретного термина по идентификатору
+
+```text
+GET /api/terms/{term_id}
+```
+
+### Получение графа терминов 
+
+```text
+GET /api/graph
+```
+
+### Создание нового термина 
+
+```text
+POST /api/terms
+```
+
+Пример запроса:
+```bash
+curl -X POST "http://localhost:8000/api/terms" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "keyword": "Screen Reader",
+    "definition": "Программа экранного доступа, озвучивающая содержимое экрана.",
+    "source": "MDN"
+  }'
+```
+Примечание: поля `source` и `related_terms` являются необязательными.
+
+
+### Обновление существующего термина
+
+```text
+PUT /api/terms/{term_id}
+```
+
+Пример запроса 
+```bash
+curl -X POST "http://localhost:8000/api/terms" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "keyword": "Screen Reader",
+    "definition": "Программа экранного доступа, озвучивающая содержимое экрана.",
+    "source": "MDN"
+  }'
+```
+Примечание: при обновлении нужно передавать полный объект `TermBase`, так как PUT-запрос полностью перезаписывает данные по указанному ID. Поля `source` и `related_terms` остаются необязательными, но если их не передать, они примут значения по умолчанию (null и []).
+
+### Удаление термина по идентификатору
+
+```text
+DELETE /api/terms/{term_id}
+```

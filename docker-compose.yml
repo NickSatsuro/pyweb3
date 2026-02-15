@@ -3,8 +3,8 @@ version: '3.8'
 services:
   api:
     image: satsuro/glossary-backend:latest
-    container_name: glossary_backend
     platform: linux/amd64
+    container_name: glossary_backend
     ports:
       - "8000:8000"
     volumes:
@@ -13,12 +13,10 @@ services:
 
   web:
     image: satsuro/glossary-frontend:latest
-    container_name: glossary_frontend
     platform: linux/amd64
+    container_name: glossary_frontend
     ports:
       - "3000:80"
-    volumes:
-      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - api
     restart: always
